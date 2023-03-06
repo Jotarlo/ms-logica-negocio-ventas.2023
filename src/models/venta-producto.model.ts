@@ -21,6 +21,15 @@ export class VentaProducto extends Entity {
   })
   precioUnitario: number;
 
+  @property({
+    type: 'number',
+  })
+  productoId?: number;
+
+  @property({
+    type: 'number',
+  })
+  ventaId?: number;
 
   constructor(data?: Partial<VentaProducto>) {
     super(data);
