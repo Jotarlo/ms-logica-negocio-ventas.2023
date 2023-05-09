@@ -22,6 +22,10 @@ export class ProductoController {
     public productoRepository: ProductoRepository,
   ) { }
 
+  @authenticate({
+    strategy: "auth",
+    options: [ConfiguracionSeguridad.menuProductoId, ConfiguracionSeguridad.guardarAccion]
+  })
   @post('/producto')
   @response(200, {
     description: 'Producto model instance',
@@ -54,10 +58,7 @@ export class ProductoController {
     return this.productoRepository.count(where);
   }
 
-  @authenticate({
-    strategy: "auth",
-    options: [ConfiguracionSeguridad.menuProductoId, ConfiguracionSeguridad.listarAccion]
-  })
+
   @get('/producto')
   @response(200, {
     description: 'Array of Producto model instances',
