@@ -77,6 +77,34 @@ export class ProductoController {
     return this.productoRepository.find(filter);
   }
 
+  @authenticate({
+    strategy: "auth",
+    options: [ConfiguracionSeguridad.menuProductoId, ConfiguracionSeguridad.listarAccion]
+  })
+  @get('/producto-paginado')
+  @response(200, {
+    description: 'Array of Producto model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Producto, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async findToPagination(
+    @param.filter(Producto) filter?: Filter<Producto>,
+  ): Promise<object> {
+    let total: number = (await this.productoRepository.count()).count;
+    let registros: Producto[] = await this.productoRepository.find(filter);
+    let respuesta = {
+      registros: registros,
+      totalRegistros: total
+    };
+    return respuesta;
+  }
+
   @patch('/producto')
   @response(200, {
     description: 'Producto PATCH success count',
